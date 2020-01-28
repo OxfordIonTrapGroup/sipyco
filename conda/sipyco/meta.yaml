@@ -2,6 +2,8 @@ package:
   name: sipyco
   version: {{ environ.get("GIT_DESCRIBE_TAG", "")[1:] }}
 
+{% set data = load_setup_py_data() %}
+
 source:
   path: ../..
 
@@ -10,6 +12,13 @@ build:
   number: {{ environ.get("GIT_DESCRIBE_NUMBER", 0) }}
   string: py35_{{ environ.get("GIT_DESCRIBE_NUMBER", 0) }}+git{{ environ.get("GIT_DESCRIBE_HASH", "")[1:] }}
   script: python setup.py install
+  entry_points:
+    # NOTE: conda-build cannot distinguish between console and gui scripts
+    {% for entry_point_type, entry_points in data.get("entry_points", dict()).items() -%}
+    {% for entry_point in entry_points -%}
+    - {{ entry_point }}
+    {% endfor %}
+    {% endfor %}
 
 requirements:
   build:
