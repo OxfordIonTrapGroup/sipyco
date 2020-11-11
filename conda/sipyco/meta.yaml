@@ -22,8 +22,8 @@ build:
 
 requirements:
   build:
-    - python 3.5*
+    - python 3.8*
     - numpy
   run:
-    - python 3.5*
+    - python 3.8*
     - numpy
